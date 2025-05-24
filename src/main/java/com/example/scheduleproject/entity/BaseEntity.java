@@ -3,12 +3,13 @@ package com.example.scheduleproject.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
+import lombok.Getter;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-
+@Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 //Auditing 기능을 작동시키려면, 어떤 이벤트가 일어날 때 자동으로 반응하게 만들어야 한다
