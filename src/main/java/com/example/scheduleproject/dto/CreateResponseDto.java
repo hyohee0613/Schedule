@@ -14,5 +14,6 @@ public class CreateResponseDto {
     private String name;
     private String title;
     private LocalDateTime updatedAt;
+    private LocalDateTime createdAt;
 
 }

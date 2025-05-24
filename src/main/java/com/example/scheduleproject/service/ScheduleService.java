@@ -2,17 +2,22 @@ package com.example.scheduleproject.service;
 
 import com.example.scheduleproject.dto.CreateRequestDto;
 import com.example.scheduleproject.dto.CreateResponseDto;
+import com.example.scheduleproject.dto.GetScheduleResponseDto;
 import com.example.scheduleproject.entity.Schedule;
 import com.example.scheduleproject.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
 
+    //일정 생성 CREATE
     public CreateResponseDto createSchedule(CreateRequestDto createRequestDto) {
         // 1. DTO → Entity
         Schedule schedule = new Schedule();   //빈 Schedule 엔티티를 하나 생성함
@@ -32,8 +37,32 @@ public class ScheduleService {
                 saved.getId(),
                 saved.getName(),
                 saved.getTitle(),
+                saved.getCreatedAt(),
                 saved.getUpdatedAt()
         );
 
     }
+
+    //전체 일정 조회 GET
+    public List<GetScheduleResponseDto> getAllSchedules() {
+        //반환 타입은 List<GetScheduleResponseDto> → 클라이언트에게 줄 조회 전용 DTO 리스트
+
+        List<Schedule> scheduleList = scheduleRepository.findAll();
+        //DB에 있는 Schedule 엔티티들을 전부 불러온다
+        //findAll()은 JpaRepository가 제공하는 메서드이며, SELECT * FROM schedule과 같은 역할
+        //결과는 List<Schedule> 형태로 저장
+
+        return scheduleList.stream()  //scheduleList를 Java Stream API로 변환
+                .map(schedule -> new GetScheduleResponseDto( //각 schedule 객체를 → GetScheduleResponseDto 객체로 변환한다는 뜻
+                        schedule.getId(),   //Schedule 엔티티의 데이터를 꺼내서 DTO 생성자에 순서대로 전달하면 Dto 객체가 만들어짐
+                        schedule.getName(),
+                        schedule.getTitle(),
+                        schedule.getCreatedAt(),
+                        schedule.getUpdatedAt()
+                ))
+                .collect(Collectors.toList());
+        //변환된 GetScheduleResponseDto 객체들을 리스트로 수집해서 반환
+        //Stream<GetScheduleResponseDto> → List<GetScheduleResponseDto>로 변환
+    }
+
 }

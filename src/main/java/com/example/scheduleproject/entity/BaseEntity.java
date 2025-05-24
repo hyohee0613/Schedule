@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -17,8 +18,12 @@ import java.time.LocalDateTime;
 public abstract class BaseEntity {
     //직접 인스턴스를 생성할 일이 없으므로 abstract로 선언, 오직 상속용으로만 쓴다
 
+    @CreatedDate    //처음 저장될 때만 값이 들어감
+    @Column(name = "created_at", updatable = false)  //updatable = false 설정으로 생성 시간이 수정되지 못하게
+    private LocalDateTime createdAt;
+
     @LastModifiedDate
-    @Column(name = "updated_at")    //updatable = false 설정은 create_at에 쓰기 (생성 시간이 수정되지 못하게)
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
 }
