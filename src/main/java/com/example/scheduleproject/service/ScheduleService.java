@@ -69,6 +69,7 @@ public class ScheduleService {
     // 단건 일정 조회 (ID로 조회) GET
     public GetScheduleResponseDto getScheduleById(Long id) {
         Schedule schedule = scheduleRepository.findById(id)
+                //Optional<Schedule>을 반환하는 JPA 기본 메서드, id에 해당하는 일정이 있으면 Schedule 반환, 없으면 Optional.empty()
                 .orElseThrow(() -> new IllegalArgumentException("해당 일정이 존재하지 않습니다. ID=" + id));
 
         return new GetScheduleResponseDto(
@@ -90,10 +91,10 @@ public class ScheduleService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        // 제목 수정
+        // title 수정 기능
         schedule.setTitle(requestDto.getTitle());
 
-        // 저장 (변경감지)
+        // 저장 (JPA에서는 변경 감지(dirty checking) 로 인해 save 없이도 업데이트 되지만, 명확하게 적어줌)
         Schedule updated = scheduleRepository.save(schedule);
 
         return new GetScheduleResponseDto(
@@ -115,6 +116,8 @@ public class ScheduleService {
         }
 
         scheduleRepository.delete(schedule);
+        //JpaRepository의 기본 메서드 delete()
+        //DB에서는 DELETE FROM schedule WHERE id = ? 쿼리로 실행됨
     }
 
 
