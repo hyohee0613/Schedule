@@ -26,5 +26,9 @@ public class Schedule extends BaseEntity {
 //    @Column(name = "updated_at") // DB 컬럼명
 //    private LocalDateTime updatedAt;
 
+    @ManyToOne   //Schedule → User는 N:1
+    @JoinColumn(name = "user_id", nullable = false) // User.id를 FK로 사용
+    private User user;
+
 
 }
