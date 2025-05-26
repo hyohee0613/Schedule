@@ -2,14 +2,14 @@ package com.example.scheduleproject.controller;
 
 import com.example.scheduleproject.dto.CreateRequestDto;
 import com.example.scheduleproject.dto.CreateResponseDto;
+import com.example.scheduleproject.dto.GetScheduleResponseDto;
 import com.example.scheduleproject.entity.Schedule;
 import com.example.scheduleproject.repository.ScheduleRepository;
 import com.example.scheduleproject.service.ScheduleService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/schedule")
@@ -30,6 +30,13 @@ public class ScheduleController {
     public ResponseEntity<CreateResponseDto> createAPI(@RequestBody CreateRequestDto createRequestDto) {
         CreateResponseDto responseDto = scheduleService.createSchedule(createRequestDto);
         return ResponseEntity.status(201).body(responseDto);
+    }
+
+    // 전체일정 조회 GET
+    @GetMapping
+    public ResponseEntity<List<GetScheduleResponseDto>> getAllSchedules() {
+        List<GetScheduleResponseDto> responseList = scheduleService.getAllSchedules();
+        return ResponseEntity.ok(responseList);
     }
 
 }
