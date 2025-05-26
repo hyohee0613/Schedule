@@ -1,7 +1,7 @@
 package com.example.scheduleproject.controller;
 
-import com.example.scheduleproject.dto.CreateRequestDto;
-import com.example.scheduleproject.dto.CreateResponseDto;
+import com.example.scheduleproject.dto.CreateScheduleRequestDto;
+import com.example.scheduleproject.dto.CreateScheduleResponseDto;
 import com.example.scheduleproject.dto.GetScheduleResponseDto;
 import com.example.scheduleproject.dto.PatchScheduleRequestDto;
 import com.example.scheduleproject.service.ScheduleService;
@@ -26,8 +26,8 @@ public class ScheduleController {
 
     // 일정 생성 CREATE
     @PostMapping("/create")
-    public ResponseEntity<CreateResponseDto> createAPI(@RequestBody CreateRequestDto createRequestDto) {
-        CreateResponseDto responseDto = scheduleService.createSchedule(createRequestDto);
+    public ResponseEntity<CreateScheduleResponseDto> createAPI(@RequestBody CreateScheduleRequestDto createScheduleRequestDto) {
+        CreateScheduleResponseDto responseDto = scheduleService.createSchedule(createScheduleRequestDto);
         return ResponseEntity.status(201).body(responseDto);
     }
 
